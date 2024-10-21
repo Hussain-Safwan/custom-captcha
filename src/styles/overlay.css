@@ -1,4 +1,5 @@
 .mainbody {
+  cursor: pointer;
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   width: 50%;
@@ -6,17 +7,13 @@
   border: 1px solid #fff;
   background: rgba(255, 255, 255, 0.4);
   position: absolute;
-
-  /* display: flex; */
-  /* align-items: center; */
-  /* justify-content: center; */
-  pointer-events: none;
   z-index: 2;
 }
 
 .section {
   border: 1px solid #fff;
   cursor: pointer;
+  transition: 0.5s;
 }
 
 .section:hover {
