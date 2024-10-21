@@ -2,8 +2,9 @@
   cursor: pointer;
   display: grid;
   grid-template-columns: repeat(5, 1fr);
+  grid-template-rows: repeat(5, 1fr);
   width: 50%;
-  height: 30vh;
+  /* height: 30vh; */
   border: 1px solid #fff;
   background: rgba(255, 255, 255, 0.4);
   position: absolute;
@@ -14,6 +15,8 @@
   border: 1px solid #fff;
   cursor: pointer;
   transition: 0.5s;
+  display: flex;
+  justify-content: center;
 }
 
 .section:hover {

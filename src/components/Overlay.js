@@ -10,7 +10,7 @@ const Icon = ({ setPosition, position }) => {
     return <></>;
   }
 
-  const style = { marginTop: "15px" };
+  const style = { padding: "10px 0" };
   const iconType = Math.floor(Math.random() * 10) % 3;
   const tintType = Math.floor(Math.random() * 10) % 3;
   const iconTint = ["error", "success", "secondary"];
