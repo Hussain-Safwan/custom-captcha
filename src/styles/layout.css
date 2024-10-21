@@ -1,0 +1,40 @@
+.wrapper {
+  width: 40%;
+  margin: auto;
+}
+
+.overlay {
+  width: 50%;
+  height: 30vh;
+  border: 1px solid red;
+  position: absolute;
+  /* display: flex; */
+  /* align-items: center; */
+  /* justify-content: center; */
+  pointer-events: none;
+  z-index: 2;
+  top: 0px;
+}
+
+.feed {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 90vh;
+  flex-direction: column;
+  position: relative;
+}
+
+.capture-btn {
+  display: flex;
+  justify-content: center;
+}
+.capture-btn button {
+  font-size: 15px;
+  padding: 10px 20px;
+}
+
+.webcam-container {
+  display: inline-block;
+  position: relative;
+}
