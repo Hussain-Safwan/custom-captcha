@@ -1,0 +1,17 @@
+.mainbody {
+  width: 50%;
+  height: 30vh;
+  border: 1px solid #fff;
+  background: rgba(255, 255, 255, 0.4);
+  position: absolute;
+  display: grid;
+  /* display: flex; */
+  /* align-items: center; */
+  /* justify-content: center; */
+  pointer-events: none;
+  z-index: 2;
+}
+
+.section {
+  border: 1px solid red;
+}
