@@ -30,9 +30,9 @@ const VideoFeed = () => {
     setImage(imageSrc);
   }, [webcamRef]);
 
-  const setIconPosition = (position, iconShape) => {
+  const setIconPosition = (position, icon) => {
     const tempMap = iconMap;
-    tempMap[position] = iconShape;
+    tempMap[position] = icon;
     setIconMap(tempMap);
   };
 

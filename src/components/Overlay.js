@@ -10,11 +10,37 @@ const Icon = ({ setPosition, position }) => {
     return <></>;
   }
 
+  const style = { marginTop: "15px" };
   const iconType = Math.floor(Math.random() * 10) % 3;
-  const iconList = [<ChangeHistoryIcon />, <SquareIcon />, <CircleIcon />];
-  if (iconType === 0) setPosition(position, "triangle");
-  else if (iconType === 1) setPosition(position, "square");
-  else setPosition(position, "circle");
+  const tintType = Math.floor(Math.random() * 10) % 3;
+  const iconTint = ["error", "success", "secondary"];
+  const iconList = [
+    <ChangeHistoryIcon style={style} color={iconTint[tintType]} />,
+    <SquareIcon style={style} color={iconTint[tintType]} />,
+    <CircleIcon style={style} color={iconTint[tintType]} />,
+  ];
+
+  const colorTranslate = (type) => {
+    if (type === 0) return "red";
+    else if (type === 1) return "green";
+    return "blue";
+  };
+
+  if (iconType === 0)
+    setPosition(position, {
+      iconShape: "traingle",
+      iconTint: colorTranslate(tintType),
+    });
+  else if (iconType === 1)
+    setPosition(position, {
+      iconShape: "square",
+      iconTint: colorTranslate(tintType),
+    });
+  else
+    setPosition(position, {
+      iconShape: "circle",
+      iconTint: colorTranslate(tintType),
+    });
   return iconList[iconType];
 };
 
