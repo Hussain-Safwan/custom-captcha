@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from "react";
 import Webcam from "react-webcam";
+import Overlay from "./Overlay";
 
 const VideoFeed = () => {
+  const [coordinates, setCoordinates] = useState({ top: 0, left: 0 });
+  const [image, setImage] = useState();
+  const webcamRef = React.useRef(null);
+  const [iconMap, setIconMap] = useState({});
+
   const constraints = { width: 512, height: 512, facingMode: "user" };
   const randomNumber = (min, max) => {
     return Math.random() * (max - min) + min;
   };
-
-  const [coordinates, setCoordinates] = useState({ top: 0, left: 0 });
-  const [image, setImage] = useState();
-  const webcamRef = React.useRef(null);
 
   useEffect(() => {
     if (!image) {
@@ -27,6 +29,16 @@ const VideoFeed = () => {
     const imageSrc = webcamRef.current.getScreenshot();
     setImage(imageSrc);
   }, [webcamRef]);
+
+  const setIconPosition = (position, iconShape) => {
+    const tempMap = iconMap;
+    tempMap[position] = iconShape;
+    setIconMap(tempMap);
+  };
+
+  const handleSectionClick = (position) => {
+    console.log(iconMap[position]);
+  };
 
   return (
     <>
@@ -52,10 +64,11 @@ const VideoFeed = () => {
       ) : (
         <div>
           <div className="webcam-container">
-            <div
-              className="overlay"
-              style={{ top: coordinates.top, left: coordinates.left }}
-            ></div>
+            <Overlay
+              location={coordinates}
+              setIconPosition={setIconPosition}
+              handleSectionClick={handleSectionClick}
+            />
             <img src={image} />
           </div>
           <br />
