@@ -6,7 +6,7 @@ import CircleIcon from "@mui/icons-material/CircleOutlined";
 const Icon = ({ setPosition, position }) => {
   const empty = Math.floor(Math.random() * 10) % 2;
   if (empty === 0) {
-    setPosition(position, "empty");
+    setPosition(position, { empty: true });
     return <></>;
   }
 
@@ -28,16 +28,19 @@ const Icon = ({ setPosition, position }) => {
 
   if (iconType === 0)
     setPosition(position, {
+      empty: false,
       iconShape: "triangle",
       iconTint: colorTranslate(tintType),
     });
   else if (iconType === 1)
     setPosition(position, {
+      empty: false,
       iconShape: "square",
       iconTint: colorTranslate(tintType),
     });
   else
     setPosition(position, {
+      empty: false,
       iconShape: "circle",
       iconTint: colorTranslate(tintType),
     });
