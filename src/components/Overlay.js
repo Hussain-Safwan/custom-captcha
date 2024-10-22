@@ -28,7 +28,7 @@ const Icon = ({ setPosition, position }) => {
 
   if (iconType === 0)
     setPosition(position, {
-      iconShape: "traingle",
+      iconShape: "triangle",
       iconTint: colorTranslate(tintType),
     });
   else if (iconType === 1)
