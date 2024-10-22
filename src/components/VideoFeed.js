@@ -10,12 +10,14 @@ const VideoFeed = () => {
   };
 
   const randomInt=(rem)=>{return Math.floor(Math.random() * 10)%rem}
-  // let challengeSet=false
   const [coordinates, setCoordinates] = useState({ top: 0, left: 0 });
   const [image, setImage] = useState();
   const webcamRef = React.useRef(null);
   const [iconMap, setIconMap] = useState({});
   const [challenge, setChallenge]=useState(null)
+  const [errorCount, setErrorCount]=useState(-1)
+
+  let selectedSections=[]
 
   const constraints = { width: 512, height: 512, facingMode: "user" };
 
@@ -33,7 +35,6 @@ const VideoFeed = () => {
 
   const capture = React.useCallback(() => {
     // webcamRef.current.getScreenshot();
-    console.log(iconMap)
     const imageSrc = temp
     setImage(imageSrc);
   }, [webcamRef]);
@@ -49,8 +50,19 @@ const VideoFeed = () => {
   };
 
   const handleSectionClick = (position) => {
-    console.log(iconMap[position]);
+    selectedSections.push(iconMap[position])
   };
+
+  const validate=()=>{
+    console.log(selectedSections)
+    let count=0;
+    selectedSections.forEach(section=>{
+      if (section.empty) count++
+      else if (challenge.shape!==section.iconShape || challenge.tint!==section.iconTint) count++
+    })
+
+    setErrorCount(count)
+  }
 
   return (
     <>
@@ -86,7 +98,7 @@ const VideoFeed = () => {
           </div>
           <br />
           <div className="capture-btn">
-            <Button style={{width: '75%'}} variant="outlined">Validate</Button>
+            <Button style={{width: '75%'}} variant="outlined" onClick={validate}>Validate</Button>
           </div>
         </div>
       )}
