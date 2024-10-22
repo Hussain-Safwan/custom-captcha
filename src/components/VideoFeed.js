@@ -44,7 +44,7 @@ const VideoFeed = () => {
     tempMap[position] = icon;
     setIconMap(tempMap);
 
-    if (icon!=='empty'){
+    if (!icon.empty){
       setChallenge(state=>!state?{shape:icon.iconShape, tint: icon.iconTint}:state)
     }
   };
@@ -54,7 +54,6 @@ const VideoFeed = () => {
   };
 
   const validate=()=>{
-    console.log(selectedSections)
     let count=0;
     selectedSections.forEach(section=>{
       if (section.empty) count++
@@ -82,7 +81,7 @@ const VideoFeed = () => {
           </div>
           <br />
           <div className="capture-btn">
-            <button onClick={capture}>Capture</button>
+          <Button style={{width: '75%'}} variant="outlined" onClick={capture}>Capture</Button>
           </div>
         </div>
       ) : (
@@ -98,7 +97,11 @@ const VideoFeed = () => {
           </div>
           <br />
           <div className="capture-btn">
-            <Button style={{width: '75%'}} variant="outlined" onClick={validate}>Validate</Button>
+            {
+              errorCount===-1?<Button style={{width: '75%'}} variant="outlined" onClick={validate}>Validate</Button>:
+              (errorCount===0?<Button style={{width: '75%'}} color="success" variant="contained" onClick={validate}>Validated. Click to proceed</Button>:
+              <Button style={{width: '75%'}} variant="contained" color="error" onClick={validate}>Validation Error</Button>)
+            }
           </div>
         </div>
       )}
