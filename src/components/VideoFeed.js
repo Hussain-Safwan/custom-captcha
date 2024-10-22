@@ -1,17 +1,23 @@
 import React, { useEffect, useState } from "react";
 import Webcam from "react-webcam";
 import Overlay from "./Overlay";
+import temp from '../elephants-ds.jpg'
+import { Button } from "@mui/material";
 
 const VideoFeed = () => {
+  const randomNumber = (min, max) => {
+    return Math.random() * (max - min) + min;
+  };
+
+  const randomInt=(rem)=>{return Math.floor(Math.random() * 10)%rem}
+  // let challengeSet=false
   const [coordinates, setCoordinates] = useState({ top: 0, left: 0 });
   const [image, setImage] = useState();
   const webcamRef = React.useRef(null);
   const [iconMap, setIconMap] = useState({});
+  const [challenge, setChallenge]=useState(null)
 
   const constraints = { width: 512, height: 512, facingMode: "user" };
-  const randomNumber = (min, max) => {
-    return Math.random() * (max - min) + min;
-  };
 
   useEffect(() => {
     if (!image) {
@@ -26,7 +32,9 @@ const VideoFeed = () => {
   }, [image]);
 
   const capture = React.useCallback(() => {
-    const imageSrc = webcamRef.current.getScreenshot();
+    // webcamRef.current.getScreenshot();
+    console.log(iconMap)
+    const imageSrc = temp
     setImage(imageSrc);
   }, [webcamRef]);
 
@@ -34,6 +42,10 @@ const VideoFeed = () => {
     const tempMap = iconMap;
     tempMap[position] = icon;
     setIconMap(tempMap);
+
+    if (icon!=='empty'){
+      setChallenge(state=>!state?{shape:icon.iconShape, tint: icon.iconTint}:state)
+    }
   };
 
   const handleSectionClick = (position) => {
@@ -63,6 +75,7 @@ const VideoFeed = () => {
         </div>
       ) : (
         <div>
+          {challenge&&<h2>{`Please select all ${challenge.tint} ${challenge.shape}s`}</h2>}
           <div className="webcam-container">
             <Overlay
               location={coordinates}
@@ -73,7 +86,7 @@ const VideoFeed = () => {
           </div>
           <br />
           <div className="capture-btn">
-            <button onClick={capture}>Validate</button>
+            <Button style={{width: '75%'}} variant="outlined">Validate</Button>
           </div>
         </div>
       )}
