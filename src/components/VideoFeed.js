@@ -3,6 +3,7 @@ import Webcam from "react-webcam";
 import Overlay from "./Overlay";
 import temp from '../elephants-ds.jpg'
 import { Button } from "@mui/material";
+import CheckCircleIcon from '@mui/icons-material/CheckCircleOutline';
 
 const VideoFeed = () => {
   const randomNumber = (min, max) => {
@@ -17,7 +18,7 @@ const VideoFeed = () => {
   const [challenge, setChallenge]=useState(null)
   const [errorCount, setErrorCount]=useState(-1)
 
-  let selectedSections=[]
+  let selectedSections=new Set()
 
   const constraints = { width: 512, height: 512, facingMode: "user" };
 
@@ -50,16 +51,17 @@ const VideoFeed = () => {
   };
 
   const handleSectionClick = (position) => {
-    selectedSections.push(iconMap[position])
+    selectedSections.add(position)
   };
 
   const validate=()=>{
     let count=0;
-    selectedSections.forEach(section=>{
-      if (section.empty) count++
-      else if (challenge.shape!==section.iconShape || challenge.tint!==section.iconTint) count++
-    })
-
+    const targetPositions = Object.keys(iconMap).filter(position => !iconMap[position].empty && 
+      iconMap[position].iconShape===challenge.shape && 
+      iconMap[position].iconTint===challenge.tint 
+    )
+    
+    console.log(targetPositions)
     setErrorCount(count)
   }
 
@@ -99,8 +101,10 @@ const VideoFeed = () => {
           <div className="capture-btn">
             {
               errorCount===-1?<Button style={{width: '75%'}} variant="outlined" onClick={validate}>Validate</Button>:
-              (errorCount===0?<Button style={{width: '75%'}} color="success" variant="contained" onClick={validate}>Validated. Click to proceed</Button>:
-              <Button style={{width: '75%'}} variant="contained" color="error" onClick={validate}>Validation Error</Button>)
+              (errorCount===0?<Button style={{width: '75%'}} color="success" variant="outlined" onClick={validate}>
+                <CheckCircleIcon color="success"/>
+                Validated. Click to proceed</Button>:
+              <Button style={{width: '75%'}} variant="outlined" color="error" onClick={validate}>Validation Error</Button>)
             }
           </div>
         </div>
