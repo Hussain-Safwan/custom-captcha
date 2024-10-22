@@ -1,24 +1,26 @@
 import React, { useEffect, useState } from "react";
 import Webcam from "react-webcam";
 import Overlay from "./Overlay";
-import temp from '../elephants-ds.jpg'
+import temp from "../elephants-ds.jpg";
 import { Button } from "@mui/material";
-import CheckCircleIcon from '@mui/icons-material/CheckCircleOutline';
+import CapturedImage from "./CapturedImage";
 
 const VideoFeed = () => {
   const randomNumber = (min, max) => {
     return Math.random() * (max - min) + min;
   };
 
-  const randomInt=(rem)=>{return Math.floor(Math.random() * 10)%rem}
+  const randomInt = (rem) => {
+    return Math.floor(Math.random() * 10) % rem;
+  };
   const [coordinates, setCoordinates] = useState({ top: 0, left: 0 });
   const [image, setImage] = useState();
   const webcamRef = React.useRef(null);
   const [iconMap, setIconMap] = useState({});
-  const [challenge, setChallenge]=useState(null)
-  const [errorCount, setErrorCount]=useState(-1)
+  const [challenge, setChallenge] = useState(null);
+  const [errorCount, setErrorCount] = useState(-1);
 
-  let selectedSections=new Set()
+  let selectedSections = new Set();
 
   const constraints = { width: 512, height: 512, facingMode: "user" };
 
@@ -36,7 +38,7 @@ const VideoFeed = () => {
 
   const capture = React.useCallback(() => {
     // webcamRef.current.getScreenshot();
-    const imageSrc = temp
+    const imageSrc = temp;
     setImage(imageSrc);
   }, [webcamRef]);
 
@@ -45,25 +47,29 @@ const VideoFeed = () => {
     tempMap[position] = icon;
     setIconMap(tempMap);
 
-    if (!icon.empty){
-      setChallenge(state=>!state?{shape:icon.iconShape, tint: icon.iconTint}:state)
+    if (!icon.empty) {
+      setChallenge((state) =>
+        !state ? { shape: icon.iconShape, tint: icon.iconTint } : state
+      );
     }
   };
 
   const handleSectionClick = (position) => {
-    selectedSections.add(position)
+    selectedSections.add(position);
   };
 
-  const validate=()=>{
-    let count=0;
-    const targetPositions = Object.keys(iconMap).filter(position => !iconMap[position].empty && 
-      iconMap[position].iconShape===challenge.shape && 
-      iconMap[position].iconTint===challenge.tint 
-    )
-    
-    console.log(targetPositions)
-    setErrorCount(count)
-  }
+  const validate = () => {
+    let count = 0;
+    const targetPositions = Object.keys(iconMap).filter(
+      (position) =>
+        !iconMap[position].empty &&
+        iconMap[position].iconShape === challenge.shape &&
+        iconMap[position].iconTint === challenge.tint
+    );
+
+    targetPositions.map((item) => console.log(item, iconMap[item]));
+    setErrorCount(count);
+  };
 
   return (
     <>
@@ -83,31 +89,25 @@ const VideoFeed = () => {
           </div>
           <br />
           <div className="capture-btn">
-          <Button style={{width: '75%'}} variant="outlined" onClick={capture}>Capture</Button>
+            <Button
+              style={{ width: "75%" }}
+              variant="outlined"
+              onClick={capture}
+            >
+              Capture
+            </Button>
           </div>
         </div>
       ) : (
-        <div>
-          {challenge&&<h2>{`Please select all ${challenge.tint} ${challenge.shape}s`}</h2>}
-          <div className="webcam-container">
-            <Overlay
-              location={coordinates}
-              setIconPosition={setIconPosition}
-              handleSectionClick={handleSectionClick}
-            />
-            <img src={image} />
-          </div>
-          <br />
-          <div className="capture-btn">
-            {
-              errorCount===-1?<Button style={{width: '75%'}} variant="outlined" onClick={validate}>Validate</Button>:
-              (errorCount===0?<Button style={{width: '75%'}} color="success" variant="outlined" onClick={validate}>
-                <CheckCircleIcon color="success"/>
-                Validated. Click to proceed</Button>:
-              <Button style={{width: '75%'}} variant="outlined" color="error" onClick={validate}>Validation Error</Button>)
-            }
-          </div>
-        </div>
+        <CapturedImage
+          challenge={challenge}
+          coordinates={coordinates}
+          setIconPosition={setIconPosition}
+          handleSectionClick={handleSectionClick}
+          validate={validate}
+          image={image}
+          errorCount={errorCount}
+        />
       )}
     </>
   );

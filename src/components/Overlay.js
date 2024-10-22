@@ -55,6 +55,7 @@ const Overlay = ({ location, setIconPosition, handleSectionClick }) => {
     >
       {[...Array(25).keys()].map((item) => (
         <div className="section" onClick={() => handleSectionClick(item)}>
+          {item}
           <Icon
             setPosition={setIconPosition}
             position={item}
