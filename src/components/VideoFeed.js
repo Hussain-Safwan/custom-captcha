@@ -5,19 +5,17 @@ import temp from "../elephants-ds.jpg";
 import { Button } from "@mui/material";
 import CapturedImage from "./CapturedImage";
 
-const VideoFeed = ({ table }) => {
+const VideoFeed = ({ table, challenge }) => {
   const randomNumber = (min, max) => {
     return Math.random() * (max - min) + min;
   };
-
   const randomInt = (rem) => {
     return Math.floor(Math.random() * 10) % rem;
   };
+
   const [coordinates, setCoordinates] = useState({ top: 0, left: 0 });
   const [image, setImage] = useState();
   const webcamRef = React.useRef(null);
-  const [iconMap, setIconMap] = useState({});
-  const [challenge, setChallenge] = useState(null);
   const [errorCount, setErrorCount] = useState(-1);
 
   let selectedSections = new Set();
@@ -42,32 +40,21 @@ const VideoFeed = ({ table }) => {
     setImage(imageSrc);
   }, [webcamRef]);
 
-  const setIconPosition = (position, icon) => {
-    const tempMap = iconMap;
-    tempMap[position] = icon;
-    setIconMap(tempMap);
-
-    if (!icon.empty) {
-      setChallenge((state) =>
-        !state ? { shape: icon.iconShape, tint: icon.iconTint } : state
-      );
-    }
-  };
-
   const handleSectionClick = (position) => {
     selectedSections.add(position);
   };
 
   const validate = () => {
+    console.log("hi");
     let count = 0;
-    const targetPositions = Object.keys(iconMap).filter(
-      (position) =>
-        !iconMap[position].empty &&
-        iconMap[position].iconShape === challenge.shape &&
-        iconMap[position].iconTint === challenge.tint
+    const targetPositions = table.filter(
+      (item) =>
+        !item.empty &&
+        item.iconShape === challenge.iconShape &&
+        item.iconTint === challenge.iconTint
     );
 
-    targetPositions.map((item) => console.log(item, iconMap[item]));
+    console.log(targetPositions);
     setErrorCount(count);
   };
 
@@ -103,7 +90,6 @@ const VideoFeed = ({ table }) => {
           table={table}
           challenge={challenge}
           coordinates={coordinates}
-          setIconPosition={setIconPosition}
           handleSectionClick={handleSectionClick}
           validate={validate}
           image={image}

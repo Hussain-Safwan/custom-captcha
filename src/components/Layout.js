@@ -6,8 +6,9 @@ const Layout = () => {
   const randomInt = (rem) => {
     return Math.floor(Math.random() * 10) % rem;
   };
-  const iconShapes = ["trianle", "square", "circle"];
+  const iconShapes = ["triangle", "square", "circle"];
   const iconTints = ["red", "green", "blue"];
+  let challenge = null;
 
   let table = Array(25).fill(0);
   table.forEach((item, i) => {
@@ -21,13 +22,14 @@ const Layout = () => {
         iconShape: iconShapes[type],
         iconTint: iconTints[type],
       };
+      if (!challenge) challenge = table[i];
     }
   });
 
   return (
     <div className="wrapper">
       <div className="feed">
-        <VideoFeed table={table} />
+        <VideoFeed table={table} challenge={challenge} />
       </div>
     </div>
   );
