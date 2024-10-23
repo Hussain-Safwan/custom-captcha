@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import Webcam from "react-webcam";
-import Overlay from "./Overlay";
 import temp from "../elephants-ds.jpg";
 import { Button } from "@mui/material";
 import CapturedImage from "./CapturedImage";
@@ -8,9 +7,6 @@ import CapturedImage from "./CapturedImage";
 const VideoFeed = ({ table, challenge }) => {
   const randomNumber = (min, max) => {
     return Math.random() * (max - min) + min;
-  };
-  const randomInt = (rem) => {
-    return Math.floor(Math.random() * 10) % rem;
   };
 
   const [coordinates, setCoordinates] = useState({ top: 0, left: 0 });
@@ -45,14 +41,16 @@ const VideoFeed = ({ table, challenge }) => {
   };
 
   const validate = () => {
-    console.log("hi");
     let count = 0;
-    const targetPositions = table.filter(
-      (item) =>
+    const targetPositions = table
+      .map((item, i) =>
         !item.empty &&
         item.iconShape === challenge.iconShape &&
         item.iconTint === challenge.iconTint
-    );
+          ? i
+          : -1
+      )
+      .filter((item) => item !== -1);
 
     console.log(targetPositions);
     setErrorCount(count);
