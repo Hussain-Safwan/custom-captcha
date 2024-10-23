@@ -18,14 +18,14 @@ const Icon = ({ icon }) => {
   return <CircleIcon color={colorMap[icon.iconTint]} />;
 };
 
-const Overlay = ({ table, location, setIconPosition, handleSectionClick }) => {
+const Overlay = ({ table, location, handleSectionClick }) => {
   return (
     <div
       style={{ top: location.top, left: location.left }}
       className="mainbody"
     >
       {table.map((item, i) => (
-        <div className="section" onClick={() => handleSectionClick(item)}>
+        <div className="section" onClick={() => handleSectionClick(i)}>
           {i + 1}
           {!item.empty && <Icon icon={item} />}
         </div>
