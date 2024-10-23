@@ -5,7 +5,7 @@ import temp from "../elephants-ds.jpg";
 import { Button } from "@mui/material";
 import CapturedImage from "./CapturedImage";
 
-const VideoFeed = () => {
+const VideoFeed = ({ table }) => {
   const randomNumber = (min, max) => {
     return Math.random() * (max - min) + min;
   };
@@ -100,6 +100,7 @@ const VideoFeed = () => {
         </div>
       ) : (
         <CapturedImage
+          table={table}
           challenge={challenge}
           coordinates={coordinates}
           setIconPosition={setIconPosition}

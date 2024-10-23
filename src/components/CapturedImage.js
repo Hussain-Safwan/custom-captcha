@@ -4,6 +4,7 @@ import { Button } from "@mui/material";
 import CheckCircleIcon from "@mui/icons-material/CheckCircleOutline";
 
 const CapturedImage = ({
+  table,
   challenge,
   coordinates,
   setIconPosition,
@@ -19,6 +20,7 @@ const CapturedImage = ({
       )}
       <div className="webcam-container">
         <Overlay
+          table={table}
           location={coordinates}
           setIconPosition={setIconPosition}
           handleSectionClick={handleSectionClick}

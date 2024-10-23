@@ -47,20 +47,22 @@ const Icon = ({ setPosition, position }) => {
   return iconList[iconType];
 };
 
-const Overlay = ({ location, setIconPosition, handleSectionClick }) => {
+const Overlay = ({ table, location, setIconPosition, handleSectionClick }) => {
   return (
     <div
       style={{ top: location.top, left: location.left }}
       className="mainbody"
     >
-      {[...Array(25).keys()].map((item) => (
+      {table.map((item, i) => (
         <div className="section" onClick={() => handleSectionClick(item)}>
-          {item}
-          <Icon
-            setPosition={setIconPosition}
-            position={item}
-            style={{ paddingTop: "20px" }}
-          />
+          {i + 1}
+          {!item.empty && (
+            <Icon
+              setPosition={setIconPosition}
+              position={item}
+              style={{ paddingTop: "20px" }}
+            />
+          )}
         </div>
       ))}
     </div>
