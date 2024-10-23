@@ -7,7 +7,6 @@ const CapturedImage = ({
   table,
   challenge,
   coordinates,
-  setIconPosition,
   handleSectionClick,
   validate,
   image,
@@ -15,14 +14,11 @@ const CapturedImage = ({
 }) => {
   return (
     <div>
-      {challenge && (
-        <h2>{`Please select all ${challenge.tint} ${challenge.shape}s`}</h2>
-      )}
+      <h2>{`Please select all ${challenge.iconTint} ${challenge.iconShape}s`}</h2>
       <div className="webcam-container">
         <Overlay
           table={table}
           location={coordinates}
-          setIconPosition={setIconPosition}
           handleSectionClick={handleSectionClick}
         />
         <img src={image} />

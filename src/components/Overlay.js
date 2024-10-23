@@ -5,7 +5,6 @@ import SquareIcon from "@mui/icons-material/CropSquareOutlined";
 import CircleIcon from "@mui/icons-material/CircleOutlined";
 
 const Icon = ({ icon }) => {
-  console.log(icon);
   const colorMap = {
     red: "error",
     green: "success",
