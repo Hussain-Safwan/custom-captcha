@@ -41,7 +41,6 @@ const VideoFeed = ({ table, challenge }) => {
   };
 
   const validate = () => {
-    let count = 0;
     const targetPositions = table
       .map((item, i) =>
         !item.empty &&
@@ -52,8 +51,15 @@ const VideoFeed = ({ table, challenge }) => {
       )
       .filter((item) => item !== -1);
 
-    console.log(targetPositions);
-    setErrorCount(count);
+    if (
+      targetPositions.sort().join(",") !==
+      Array.from(selectedSections).sort().join(",")
+    )
+      setErrorCount(1);
+    else setErrorCount(0);
+
+    console.log(targetPositions.sort().join(","));
+    console.log(Array.from(selectedSections).sort().join(","));
   };
 
   return (
