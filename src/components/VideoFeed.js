@@ -4,17 +4,23 @@ import { Button } from "@mui/material";
 import CapturedImage from "./CapturedImage";
 
 const VideoFeed = ({ table, challenge }) => {
+  // function to spit random value in the given range
   const randomNumber = (min, max) => {
     return Math.random() * (max - min) + min;
   };
 
+  // state to keep track of the curent location of frame
   const [coordinates, setCoordinates] = useState({ top: 0, left: 0 });
+  // screenshot image
   const [image, setImage] = useState();
+  // reference to the webcam element
   const webcamRef = React.useRef(null);
   const [errorCount, setErrorCount] = useState(-1);
 
+  // Set data structure; keeps track of the selected sections
   let selectedSections = new Set();
-  console.log(window.screen.height * 0.5);
+
+  // set constraints for the webcam feed window
   const constraints = {
     width: 512,
     height: window.screen.height * 0.5,
@@ -33,6 +39,8 @@ const VideoFeed = ({ table, challenge }) => {
     check();
   }, []);
 
+  // method to randomly move the frame around untill capture button is clicked
+  // achieved by randomly setting top and left values in CSS in an interval of 1 second
   useEffect(() => {
     if (!image) {
       const interval = setInterval(() => {
@@ -45,20 +53,27 @@ const VideoFeed = ({ table, challenge }) => {
     }
   }, [image]);
 
+  // screenshot capture function
   const capture = React.useCallback(() => {
     const imageSrc = webcamRef.current.getScreenshot();
     setImage(imageSrc);
   }, [webcamRef]);
 
+  // handle click on sections of the frame
   const handleSectionClick = (position) => {
+    // if already selected, then delete from set to simulate unselect operation
     if (selectedSections.has(position)) {
       selectedSections.delete(position);
-    } else {
+    }
+    // reverse if not selected
+    else {
       selectedSections.add(position);
     }
   };
 
+  // validate if the user was able to meet the presented challenge
   const validate = () => {
+    // isolate given targets
     const targetPositions = table
       .map((item, i) =>
         !item.empty &&
@@ -69,6 +84,7 @@ const VideoFeed = ({ table, challenge }) => {
       )
       .filter((item) => item !== -1);
 
+    // check if all target positions have been clicked
     if (
       targetPositions.sort().join(",") !==
       Array.from(selectedSections).sort().join(",")
@@ -76,9 +92,6 @@ const VideoFeed = ({ table, challenge }) => {
       setErrorCount(1);
       localStorage.setItem("state", JSON.stringify({ block: true, image }));
     } else setErrorCount(0);
-
-    // console.log(targetPositions.sort().join(","));
-    // console.log(Array.from(selectedSections).sort().join(","));
   };
 
   return (
