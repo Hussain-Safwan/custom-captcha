@@ -10,12 +10,12 @@ const Icon = ({ icon }) => {
     green: "success",
     blue: "secondary",
   };
-
+  const style = { marginTop: "13px" };
   if (icon.iconShape === "triangle")
-    return <ChangeHistoryIcon color={colorMap[icon.iconTint]} />;
+    return <ChangeHistoryIcon style={style} color={colorMap[icon.iconTint]} />;
   else if (icon.iconShape === "square")
-    return <SquareIcon color={colorMap[icon.iconTint]} />;
-  return <CircleIcon color={colorMap[icon.iconTint]} />;
+    return <SquareIcon style={style} color={colorMap[icon.iconTint]} />;
+  return <CircleIcon style={style} color={colorMap[icon.iconTint]} />;
 };
 
 const Overlay = ({ location, table, handleSectionClick }) => {

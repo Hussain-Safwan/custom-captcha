@@ -38,7 +38,7 @@ const CapturedImage = ({
             style={{ width: "75%" }}
             color="success"
             variant="outlined"
-            onClick={validate}
+            onClick={() => alert("You are a verified human being!")}
           >
             <CheckCircleIcon color="success" />
             Validated. Click to proceed
@@ -49,6 +49,7 @@ const CapturedImage = ({
             variant="outlined"
             color="error"
             onClick={validate}
+            disabled
           >
             Validation Error
           </Button>
