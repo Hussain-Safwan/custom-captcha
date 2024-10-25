@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Webcam from "react-webcam";
 import { Button } from "@mui/material";
 import CapturedImage from "./CapturedImage";
+import Validated from "./Validated";
 
 const VideoFeed = ({ table, challenge }) => {
   // function to spit random value in the given range
@@ -16,6 +17,10 @@ const VideoFeed = ({ table, challenge }) => {
   // reference to the webcam element
   const webcamRef = React.useRef(null);
   const [errorCount, setErrorCount] = useState(-1);
+  const [validation, setValidation] = useState({
+    done: 0,
+    message: "",
+  });
 
   // Set data structure; keeps track of the selected sections
   let selectedSections = new Set();
@@ -89,49 +94,63 @@ const VideoFeed = ({ table, challenge }) => {
       targetPositions.sort().join(",") !==
       Array.from(selectedSections).sort().join(",")
     ) {
-      setErrorCount(1);
+      setValidation({
+        done: -1,
+        message: "You did not successfully complete the CAPTCHA verification",
+      });
       localStorage.setItem("state", JSON.stringify({ block: true, image }));
-    } else setErrorCount(0);
+    } else {
+      setValidation({
+        done: 1,
+        message: "CAPTCHA successfully verified!",
+      });
+    }
   };
 
   return (
     <>
-      {!image ? (
-        <div>
-          <h2>Take Selfie</h2>
-          <div className="webcam-container">
-            <div
-              className="overlay"
-              style={{ top: coordinates.top, left: coordinates.left }}
-            ></div>
-            <Webcam
-              screenshotFormat="image/jpeg"
-              ref={webcamRef}
-              mirrored
-              videoConstraints={constraints}
-            />
-          </div>
-          <br />
-          <div className="capture-btn">
-            <Button
-              style={{ width: "75%" }}
-              variant="outlined"
-              onClick={capture}
-            >
-              Capture
-            </Button>
-          </div>
-        </div>
+      {validation.done !== 0 ? (
+        <Validated validated={validation} />
       ) : (
-        <CapturedImage
-          table={table}
-          challenge={challenge}
-          coordinates={coordinates}
-          handleSectionClick={handleSectionClick}
-          validate={validate}
-          image={image}
-          errorCount={errorCount}
-        />
+        <>
+          {!image ? (
+            <div>
+              <h2>Take Selfie</h2>
+              <div className="webcam-container">
+                <div
+                  className="overlay"
+                  style={{ top: coordinates.top, left: coordinates.left }}
+                ></div>
+                <Webcam
+                  screenshotFormat="image/jpeg"
+                  ref={webcamRef}
+                  mirrored
+                  videoConstraints={constraints}
+                />
+              </div>
+              <br />
+              <div className="capture-btn">
+                <Button
+                  style={{ width: "75%" }}
+                  variant="outlined"
+                  onClick={capture}
+                >
+                  Capture
+                </Button>
+              </div>
+            </div>
+          ) : (
+            <CapturedImage
+              table={table}
+              challenge={challenge}
+              coordinates={coordinates}
+              handleSectionClick={handleSectionClick}
+              validate={validate}
+              image={image}
+              errorCount={errorCount}
+            />
+          )}
+        </>
       )}
     </>
   );
