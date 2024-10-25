@@ -12,7 +12,7 @@ const Layout = () => {
 
   let table = Array(25).fill(0);
   table.forEach((item, i) => {
-    const empty = randomInt(2);
+    const empty = Math.random() >= 0.5;
     if (empty) {
       table[i] = { empty: true };
     } else {
