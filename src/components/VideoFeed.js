@@ -16,7 +16,6 @@ const VideoFeed = ({ table, challenge }) => {
   const [image, setImage] = useState();
   // reference to the webcam element
   const webcamRef = React.useRef(null);
-  const [errorCount, setErrorCount] = useState(-1);
   const [validation, setValidation] = useState({
     done: 0,
     message: "",
@@ -35,9 +34,9 @@ const VideoFeed = ({ table, challenge }) => {
   useEffect(() => {
     const check = async () => {
       const state = await JSON.parse(localStorage.getItem("state"));
+      console.log(state);
       if (state) {
-        setImage(state.image);
-        setErrorCount(1);
+        setValidation(state);
       }
     };
 
@@ -98,7 +97,13 @@ const VideoFeed = ({ table, challenge }) => {
         done: -1,
         message: "You did not successfully complete the CAPTCHA verification",
       });
-      localStorage.setItem("state", JSON.stringify({ block: true, image }));
+      localStorage.setItem(
+        "state",
+        JSON.stringify({
+          done: -1,
+          message: "You did not successfully complete the CAPTCHA verification",
+        })
+      );
     } else {
       setValidation({
         done: 1,
@@ -147,7 +152,6 @@ const VideoFeed = ({ table, challenge }) => {
               handleSectionClick={handleSectionClick}
               validate={validate}
               image={image}
-              errorCount={errorCount}
             />
           )}
         </>

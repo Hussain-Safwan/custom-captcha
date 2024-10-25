@@ -11,7 +11,6 @@ const CapturedImage = ({
   handleSectionClick,
   validate,
   image,
-  errorCount,
 }) => {
   return (
     <div>
@@ -26,34 +25,9 @@ const CapturedImage = ({
       </div>
       <br />
       <div className="capture-btn">
-        {errorCount === -1 ? (
-          <Button
-            style={{ width: "75%" }}
-            variant="outlined"
-            onClick={validate}
-          >
-            Validate
-          </Button>
-        ) : errorCount === 0 ? (
-          <Button
-            style={{ width: "75%" }}
-            color="success"
-            variant="outlined"
-            onClick={() => alert("You are a verified human being!")}
-          >
-            <CheckCircleIcon color="success" />
-            Validated. Click to proceed
-          </Button>
-        ) : (
-          <Button
-            style={{ width: "75%" }}
-            variant="outlined"
-            color="error"
-            disabled
-          >
-            Validation Error
-          </Button>
-        )}
+        <Button style={{ width: "75%" }} variant="outlined" onClick={validate}>
+          Validate
+        </Button>
       </div>
     </div>
   );
