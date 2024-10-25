@@ -1,4 +1,4 @@
-import React, { memo } from "react";
+import React, { memo, useState } from "react";
 import "../styles/overlay.css";
 import ChangeHistoryIcon from "@mui/icons-material/ChangeHistory";
 import SquareIcon from "@mui/icons-material/CropSquareOutlined";
@@ -18,16 +18,28 @@ const Icon = ({ icon }) => {
   return <CircleIcon color={colorMap[icon.iconTint]} />;
 };
 
-const Overlay = ({ location, setIconPosition, handleSectionClick }) => {
-  console.log("render");
+const Overlay = ({ location, table, handleSectionClick }) => {
+  const [selectedSections, setSelectedSections] = useState(
+    Array(25).fill(false)
+  );
+  const clickSection = (i) => {
+    const sections = selectedSections;
+    sections[i] = !sections[i];
+    setSelectedSections([...sections]);
+    handleSectionClick(i);
+  };
+
   return (
     <div
       style={{ top: location.top, left: location.left }}
       className="mainbody"
     >
       {table.map((item, i) => (
-        <div className="section" onClick={() => handleSectionClick(i)}>
-          {i + 1}
+        <div
+          className={selectedSections[i] ? "section selected" : "section"}
+          onClick={() => clickSection(i)}
+        >
+          {/* {i + 1} */}
           {!item.empty && <Icon icon={item} />}
         </div>
       ))}
