@@ -10,7 +10,7 @@ const Icon = ({ icon }) => {
     green: "success",
     blue: "secondary",
   };
-  const style = { marginTop: "13px" };
+  const style = { marginTop: "0px" };
   if (icon.iconShape === "triangle")
     return <ChangeHistoryIcon style={style} color={colorMap[icon.iconTint]} />;
   else if (icon.iconShape === "square")
