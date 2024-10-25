@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import "../styles/overlay.css";
 import ChangeHistoryIcon from "@mui/icons-material/ChangeHistory";
 import SquareIcon from "@mui/icons-material/CropSquareOutlined";
@@ -48,6 +48,7 @@ const Icon = ({ setPosition, position }) => {
 };
 
 const Overlay = ({ location, setIconPosition, handleSectionClick }) => {
+  console.log("render");
   return (
     <div
       style={{ top: location.top, left: location.left }}
@@ -67,4 +68,4 @@ const Overlay = ({ location, setIconPosition, handleSectionClick }) => {
   );
 };
 
-export default Overlay;
+export default memo(Overlay);

@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
 import Webcam from "react-webcam";
-import Overlay from "./Overlay";
-import temp from "../elephants-ds.jpg";
 import { Button } from "@mui/material";
 import CapturedImage from "./CapturedImage";
 
@@ -37,8 +35,7 @@ const VideoFeed = () => {
   }, [image]);
 
   const capture = React.useCallback(() => {
-    // webcamRef.current.getScreenshot();
-    const imageSrc = temp;
+    const imageSrc = webcamRef.current.getScreenshot();
     setImage(imageSrc);
   }, [webcamRef]);
 
@@ -67,7 +64,7 @@ const VideoFeed = () => {
         iconMap[position].iconTint === challenge.tint
     );
 
-    targetPositions.map((item) => console.log(item, iconMap[item]));
+    // targetPositions.map((item) => console.log(item, iconMap[item]));
     setErrorCount(count);
   };
 
