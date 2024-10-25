@@ -35,7 +35,11 @@ const VideoFeed = ({ table, challenge }) => {
   }, [webcamRef]);
 
   const handleSectionClick = (position) => {
-    selectedSections.add(position);
+    if (selectedSections.has(position)) {
+      selectedSections.delete(position);
+    } else {
+      selectedSections.add(position);
+    }
   };
 
   const validate = () => {
@@ -56,8 +60,8 @@ const VideoFeed = ({ table, challenge }) => {
       setErrorCount(1);
     else setErrorCount(0);
 
-    console.log(targetPositions.sort().join(","));
-    console.log(Array.from(selectedSections).sort().join(","));
+    // console.log(targetPositions.sort().join(","));
+    // console.log(Array.from(selectedSections).sort().join(","));
   };
 
   return (
