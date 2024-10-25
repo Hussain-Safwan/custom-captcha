@@ -14,8 +14,12 @@ const VideoFeed = ({ table, challenge }) => {
   const [errorCount, setErrorCount] = useState(-1);
 
   let selectedSections = new Set();
-
-  const constraints = { width: 512, height: 512, facingMode: "user" };
+  console.log(window.screen.height * 0.5);
+  const constraints = {
+    width: 512,
+    height: window.screen.height * 0.5,
+    facingMode: "user",
+  };
 
   useEffect(() => {
     const check = async () => {
