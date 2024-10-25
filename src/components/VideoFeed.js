@@ -18,6 +18,18 @@ const VideoFeed = ({ table, challenge }) => {
   const constraints = { width: 512, height: 512, facingMode: "user" };
 
   useEffect(() => {
+    const check = async () => {
+      const state = await JSON.parse(localStorage.getItem("state"));
+      if (state) {
+        setImage(state.image);
+        setErrorCount(1);
+      }
+    };
+
+    check();
+  }, []);
+
+  useEffect(() => {
     if (!image) {
       const interval = setInterval(() => {
         setCoordinates((item) => ({
@@ -56,9 +68,10 @@ const VideoFeed = ({ table, challenge }) => {
     if (
       targetPositions.sort().join(",") !==
       Array.from(selectedSections).sort().join(",")
-    )
+    ) {
       setErrorCount(1);
-    else setErrorCount(0);
+      localStorage.setItem("state", JSON.stringify({ block: true, image }));
+    } else setErrorCount(0);
 
     // console.log(targetPositions.sort().join(","));
     // console.log(Array.from(selectedSections).sort().join(","));

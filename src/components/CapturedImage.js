@@ -48,7 +48,6 @@ const CapturedImage = ({
             style={{ width: "75%" }}
             variant="outlined"
             color="error"
-            onClick={validate}
             disabled
           >
             Validation Error
