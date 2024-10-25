@@ -85,6 +85,7 @@ const VideoFeed = ({ table, challenge }) => {
     <>
       {!image ? (
         <div>
+          <h2>Take Selfie</h2>
           <div className="webcam-container">
             <div
               className="overlay"

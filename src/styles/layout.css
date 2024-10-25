@@ -3,6 +3,11 @@
   margin: auto;
 }
 
+h2 {
+  color: #4b9cd3;
+  text-align: center;
+}
+
 .overlay {
   width: 50%;
   height: 30vh;
