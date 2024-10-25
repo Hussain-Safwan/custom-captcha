@@ -16,6 +16,8 @@ const VideoFeed = ({ table, challenge }) => {
   const [image, setImage] = useState();
   // reference to the webcam element
   const webcamRef = React.useRef(null);
+  // track the current validation state
+  // done -> 0: represents unvalidated, 1: validation success, -1: error in validation
   const [validation, setValidation] = useState({
     done: 0,
     message: "",
@@ -31,6 +33,9 @@ const VideoFeed = ({ table, challenge }) => {
     facingMode: "user",
   };
 
+  // check validation state upon reload
+  // if validation=-1, i.e. error incurred, re-validation wil not be allowed
+  // this is done to prevent multiple attempts in validation
   useEffect(() => {
     const check = async () => {
       const state = await JSON.parse(localStorage.getItem("state"));
@@ -93,10 +98,12 @@ const VideoFeed = ({ table, challenge }) => {
       targetPositions.sort().join(",") !==
       Array.from(selectedSections).sort().join(",")
     ) {
+      // mark the validation to be errenous
       setValidation({
         done: -1,
         message: "You did not successfully complete the CAPTCHA verification",
       });
+      // save the error state in persistent storage to discourage further re-validation
       localStorage.setItem(
         "state",
         JSON.stringify({
@@ -105,6 +112,7 @@ const VideoFeed = ({ table, challenge }) => {
         })
       );
     } else {
+      // set validation success
       setValidation({
         done: 1,
         message: "CAPTCHA successfully verified!",
@@ -114,11 +122,15 @@ const VideoFeed = ({ table, challenge }) => {
 
   return (
     <>
+      {/* check if already validated */}
       {validation.done !== 0 ? (
+        // navigate to validated page if already validated
         <Validated validated={validation} />
       ) : (
         <>
+          {/* else head on to usual routine and check if screenshot has already been captured */}
           {!image ? (
+            // if screenshot not captured, render the webcam component
             <div>
               <h2>Take Selfie</h2>
               <div className="webcam-container">
@@ -145,6 +157,7 @@ const VideoFeed = ({ table, challenge }) => {
               </div>
             </div>
           ) : (
+            // render captured image component if captured
             <CapturedImage
               table={table}
               challenge={challenge}
