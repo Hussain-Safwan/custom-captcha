@@ -21,8 +21,8 @@ const VideoFeed = ({ table, challenge }) => {
     if (!image) {
       const interval = setInterval(() => {
         setCoordinates((item) => ({
-          top: randomNumber(0, 300),
-          left: randomNumber(0, 300),
+          top: randomNumber(0, 256),
+          left: randomNumber(0, 256),
         }));
       }, 1000);
       return () => clearInterval(interval);
