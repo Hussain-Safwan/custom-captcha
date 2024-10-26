@@ -1,5 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import VideoFeed from "./VideoFeed";
+import Validated from "./Validated";
 import "../styles/layout.css";
 
 const Layout = () => {
@@ -7,6 +9,18 @@ const Layout = () => {
   const randomInt = (rem) => {
     return Math.floor(Math.random() * 10) % rem;
   };
+
+  const state = JSON.parse(localStorage.getItem("state"));
+  if (!state) {
+    localStorage.setItem(
+      "state",
+      JSON.stringify({
+        done: 0,
+        retryLeft: 3,
+        message: "",
+      })
+    );
+  }
 
   // list of the names of the icons
   const iconShapes = ["triangle", "square", "circle"];
@@ -39,7 +53,15 @@ const Layout = () => {
   return (
     <div className="wrapper">
       <div className="feed">
-        <VideoFeed table={table} challenge={challenge} />
+        <BrowserRouter>
+          <Routes>
+            <Route
+              path="/"
+              element={<VideoFeed table={table} challenge={challenge} />}
+            ></Route>
+            <Route path="validated" element={<Validated />} />
+          </Routes>
+        </BrowserRouter>
       </div>
     </div>
   );

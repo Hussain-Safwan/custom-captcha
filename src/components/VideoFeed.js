@@ -3,6 +3,7 @@ import Webcam from "react-webcam";
 import { Button } from "@mui/material";
 import CapturedImage from "./CapturedImage";
 import Validated from "./Validated";
+import { useNavigate } from "react-router-dom";
 
 const VideoFeed = ({ table, challenge }) => {
   // function to spit random value in the given range
@@ -18,10 +19,11 @@ const VideoFeed = ({ table, challenge }) => {
   const webcamRef = React.useRef(null);
   // track the current validation state
   // done -> 0: represents unvalidated, 1: validation success, -1: error in validation
-  const [validation, setValidation] = useState({
-    done: 0,
-    message: "",
-  });
+  const [validation, setValidation] = useState(
+    JSON.parse(localStorage.getItem("state"))
+  );
+
+  const navigate = useNavigate();
 
   // Set data structure; keeps track of the selected sections
   let selectedSections = new Set();
@@ -39,7 +41,6 @@ const VideoFeed = ({ table, challenge }) => {
   useEffect(() => {
     const check = async () => {
       const state = await JSON.parse(localStorage.getItem("state"));
-      console.log(state);
       if (state) {
         setValidation(state);
       }
@@ -82,6 +83,8 @@ const VideoFeed = ({ table, challenge }) => {
 
   // validate if the user was able to meet the presented challenge
   const validate = () => {
+    const state = JSON.parse(localStorage.getItem("state"));
+
     // isolate given targets
     const targetPositions = table
       .map((item, i) =>
@@ -98,24 +101,31 @@ const VideoFeed = ({ table, challenge }) => {
       targetPositions.sort().join(",") !==
       Array.from(selectedSections).sort().join(",")
     ) {
-      // mark the validation to be errenous
-      setValidation({
-        done: -1,
-        message: "You did not successfully complete the CAPTCHA verification",
-      });
       // save the error state in persistent storage to discourage further re-validation
       localStorage.setItem(
         "state",
         JSON.stringify({
           done: -1,
+          retryLeft: state.retryLeft - 1,
           message: "You did not successfully complete the CAPTCHA verification",
         })
       );
+      // mark the validation to be errenous
+      navigate("/validated", {
+        state: {
+          done: -1,
+          retryLeft: state.retryLeft - 1,
+          message: "You did not successfully complete the CAPTCHA verification",
+        },
+      });
     } else {
       // set validation success
-      setValidation({
-        done: 1,
-        message: "CAPTCHA successfully verified!",
+      navigate("/validated", {
+        state: {
+          done: 1,
+          retryLeft: state.retryLeft,
+          message: "CAPTCHA successfully verified!",
+        },
       });
     }
   };
@@ -123,7 +133,7 @@ const VideoFeed = ({ table, challenge }) => {
   return (
     <>
       {/* check if already validated */}
-      {validation.done !== 0 ? (
+      {!validation.retryLeft ? (
         // navigate to validated page if already validated
         <Validated validated={validation} />
       ) : (
