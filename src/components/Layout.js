@@ -10,6 +10,11 @@ const Layout = () => {
     return Math.floor(Math.random() * 10) % rem;
   };
 
+  // set the application state if not set already.
+  // 3 rounds of retries are allowed for each user
+  // after each unsuccessful round, a try-again button with retry-left value appears
+  // upon completion of the 3rd consecutive unsuccessful round, the retry button gets disabled
+  // even address bar routing is disabled in this case, with the help of persistent storage
   const state = JSON.parse(localStorage.getItem("state"));
   if (!state) {
     localStorage.setItem(
@@ -55,10 +60,12 @@ const Layout = () => {
       <div className="feed">
         <BrowserRouter>
           <Routes>
+            {/* default route set to video-feed */}
             <Route
               path="/"
               element={<VideoFeed table={table} challenge={challenge} />}
             ></Route>
+            {/* routes to validated page upon completion of a challenge */}
             <Route path="validated" element={<Validated />} />
           </Routes>
         </BrowserRouter>

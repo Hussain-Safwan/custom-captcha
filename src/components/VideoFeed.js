@@ -142,7 +142,6 @@ const VideoFeed = ({ table, challenge }) => {
 
   return (
     <>
-      {/* else head on to usual routine and check if screenshot has already been captured */}
       {!image ? (
         // if screenshot not captured, render the webcam component
         <div>
