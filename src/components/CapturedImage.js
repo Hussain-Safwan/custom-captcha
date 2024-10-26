@@ -1,7 +1,6 @@
 import React from "react";
 import Overlay from "./Overlay";
 import { Button } from "@mui/material";
-import CheckCircleIcon from "@mui/icons-material/CheckCircleOutline";
 
 // component to display the captured image; rendered once the capture button is clicked
 const CapturedImage = ({
