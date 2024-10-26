@@ -70,6 +70,7 @@ const VideoFeed = ({ table, challenge }) => {
     setImage(imageSrc);
   }, [webcamRef]);
 
+  // prevents rendering video-feed if retryLeft count is 0
   const appState = JSON.parse(localStorage.getItem("state"));
   if (appState.retryLeft < 1) {
     navigate("/validated", {
@@ -119,7 +120,7 @@ const VideoFeed = ({ table, challenge }) => {
           message: "You did not successfully complete the CAPTCHA verification",
         })
       );
-      // mark the validation to be errenous
+      // navigate to validated page with current validation status (unsuccessfull)
       navigate("/validated", {
         state: {
           done: -1,
@@ -128,7 +129,7 @@ const VideoFeed = ({ table, challenge }) => {
         },
       });
     } else {
-      // set validation success
+      // navigate to validated page with current validation status (successfull)
       navigate("/validated", {
         state: {
           done: 1,
@@ -141,52 +142,44 @@ const VideoFeed = ({ table, challenge }) => {
 
   return (
     <>
-      {/* check if already validated */}
-      {!validation.retryLeft ? (
-        // navigate to validated page if already validated
-        <Validated validated={validation} />
-      ) : (
-        <>
-          {/* else head on to usual routine and check if screenshot has already been captured */}
-          {!image ? (
-            // if screenshot not captured, render the webcam component
-            <div>
-              <h2>Take Selfie</h2>
-              <div className="webcam-container">
-                <div
-                  className="overlay"
-                  style={{ top: coordinates.top, left: coordinates.left }}
-                ></div>
-                <Webcam
-                  screenshotFormat="image/jpeg"
-                  ref={webcamRef}
-                  mirrored
-                  videoConstraints={constraints}
-                />
-              </div>
-              <br />
-              <div className="capture-btn">
-                <Button
-                  style={{ width: "75%" }}
-                  variant="outlined"
-                  onClick={capture}
-                >
-                  Capture
-                </Button>
-              </div>
-            </div>
-          ) : (
-            // render captured image component if captured
-            <CapturedImage
-              table={table}
-              challenge={challenge}
-              coordinates={coordinates}
-              handleSectionClick={handleSectionClick}
-              validate={validate}
-              image={image}
+      {/* else head on to usual routine and check if screenshot has already been captured */}
+      {!image ? (
+        // if screenshot not captured, render the webcam component
+        <div>
+          <h2>Take Selfie</h2>
+          <div className="webcam-container">
+            <div
+              className="overlay"
+              style={{ top: coordinates.top, left: coordinates.left }}
+            ></div>
+            <Webcam
+              screenshotFormat="image/jpeg"
+              ref={webcamRef}
+              mirrored
+              videoConstraints={constraints}
             />
-          )}
-        </>
+          </div>
+          <br />
+          <div className="capture-btn">
+            <Button
+              style={{ width: "75%" }}
+              variant="outlined"
+              onClick={capture}
+            >
+              Capture
+            </Button>
+          </div>
+        </div>
+      ) : (
+        // render captured image component if captured
+        <CapturedImage
+          table={table}
+          challenge={challenge}
+          coordinates={coordinates}
+          handleSectionClick={handleSectionClick}
+          validate={validate}
+          image={image}
+        />
       )}
     </>
   );
