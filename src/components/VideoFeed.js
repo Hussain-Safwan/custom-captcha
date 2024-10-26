@@ -4,8 +4,11 @@ import { Button } from "@mui/material";
 import CapturedImage from "./CapturedImage";
 import Validated from "./Validated";
 import { useNavigate } from "react-router-dom";
+import { Apps } from "@mui/icons-material";
 
 const VideoFeed = ({ table, challenge }) => {
+  const navigate = useNavigate();
+
   // function to spit random value in the given range
   const randomNumber = (min, max) => {
     return Math.random() * (max - min) + min;
@@ -22,8 +25,6 @@ const VideoFeed = ({ table, challenge }) => {
   const [validation, setValidation] = useState(
     JSON.parse(localStorage.getItem("state"))
   );
-
-  const navigate = useNavigate();
 
   // Set data structure; keeps track of the selected sections
   let selectedSections = new Set();
@@ -68,6 +69,14 @@ const VideoFeed = ({ table, challenge }) => {
     const imageSrc = webcamRef.current.getScreenshot();
     setImage(imageSrc);
   }, [webcamRef]);
+
+  const appState = JSON.parse(localStorage.getItem("state"));
+  if (appState.retryLeft < 1) {
+    navigate("/validated", {
+      state: appState,
+    });
+    return;
+  }
 
   // handle click on sections of the frame
   const handleSectionClick = (position) => {
